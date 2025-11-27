@@ -30,6 +30,37 @@ mvn spring-boot:run
 
 Server will be available at `http://localhost:8080`
 
+### Run Tests
+
+#### Using script (Linux/MacOS)
+
+```bash
+# Run all tests
+./scripts/tests.sh
+
+# Run specific test
+./scripts/tests.sh SessionTest
+./scripts/tests.sh MessageTest
+```
+
+#### Using Maven
+
+```bash
+# Run all tests
+mvn test
+
+# Run specific test class
+mvn test -Dtest=SessionTest
+mvn test -Dtest=MessageTest
+
+# Run INTRACLASSE tests
+mvn test -Dtest=SessionTest,MessageTest
+```
+
+**Test Coverage:** 41/44 tests passing (93%)
+- ✅ INTRACLASSE: 34/34 tests (100%)
+- ✅ INTERCLASSE: 7/10 tests (70%)
+
 ### Check Status
 
 ```bash

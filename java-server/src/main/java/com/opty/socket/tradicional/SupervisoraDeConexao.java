@@ -56,9 +56,8 @@ public class SupervisoraDeConexao extends Thread {
     public void run() {
         ObjectOutputStream transmissor;
         try {
-            // IMPORTANTE: ObjectOutputStream PRIMEIRO (padrão do professor)
             transmissor = new ObjectOutputStream(this.conexao.getOutputStream());
-            transmissor.flush(); // CRÍTICO: flush para evitar deadlock!
+            transmissor.flush();
         } catch (Exception erro) {
             log.error("Erro ao criar transmissor: {}", erro.getMessage());
             return;
@@ -66,7 +65,7 @@ public class SupervisoraDeConexao extends Thread {
 
         ObjectInputStream receptor = null;
         try {
-            // ObjectInputStream DEPOIS (padrão do professor)
+            // ObjectInputStream DEPOIS
             receptor = new ObjectInputStream(this.conexao.getInputStream());
         } catch (Exception err0) {
             try {
@@ -91,7 +90,7 @@ public class SupervisoraDeConexao extends Thread {
 
             log.info("Cliente Socket conectado: connectionId={}", connectionId);
 
-            // Loop infinito processando comunicados (PADRÃO DO PROFESSOR)
+            // Loop infinito processando comunicados
             for(;;) {
                 Comunicado comunicado = this.usuario.envie();
 
@@ -168,7 +167,7 @@ public class SupervisoraDeConexao extends Thread {
                     // Atualizar fila
                     supervisorQueueService.broadcastQueueUpdate();
 
-                    // Remover da lista e fechar (PADRÃO DO PROFESSOR)
+                    // Remover da lista e fechar
                     synchronized (this.usuarios) {
                         this.usuarios.remove(this.usuario);
                     }

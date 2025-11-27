@@ -32,7 +32,6 @@ public class TraditionalSocketServer {
     @Value("${socket.traditional.enabled:true}")
     private boolean enabled;
 
-    // PADRÃO DO PROFESSOR
     private ArrayList<Parceiro> usuarios;
     private AceitadoraDeConexao aceitadoraDeConexao;
 
@@ -49,10 +48,10 @@ public class TraditionalSocketServer {
         try {
             log.info("Iniciando servidor Socket tradicional na porta {}...", porta);
 
-            // Criar lista de usuários (PADRÃO DO PROFESSOR)
+            // Criar lista de usuários
             usuarios = new ArrayList<>();
 
-            // Criar e iniciar AceitadoraDeConexao (PADRÃO DO PROFESSOR)
+            // Criar e iniciar AceitadoraDeConexao
             aceitadoraDeConexao = new AceitadoraDeConexao(
                     porta,
                     usuarios,
@@ -83,7 +82,7 @@ public class TraditionalSocketServer {
         log.info("Desligando servidor Socket tradicional...");
 
         synchronized (usuarios) {
-            // Enviar ComunicadoDeDesligamento para todos os clientes (PADRÃO DO PROFESSOR)
+            // Enviar ComunicadoDeDesligamento para todos os clientes
             ComunicadoDeDesligamento comunicadoDeDesligamento = new ComunicadoDeDesligamento();
 
             for (Parceiro usuario : usuarios) {
