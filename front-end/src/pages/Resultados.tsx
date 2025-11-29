@@ -255,21 +255,41 @@ const Resultados = () => {
   //  AQUI ENTRA O “PASSO 1”: FILTRAR E ORDENAR PRODUTOS
   // =========================================================
 
-  // 1) Filtra as ofertas de cada produto pela faixa de preço
+    // 1) Filtra ofertas por preço + condição
   const productsWithinPriceRange = products
     .map((product) => {
-      const offersWithinRange = product.offers.filter((offer) => {
+      const offersFiltered = product.offers.filter((offer) => {
         const price = offer.price ?? 0;
-        return price >= filters.priceMin && price <= filters.priceMax;
+
+        // Preço dentro da faixa
+        const priceOk = price >= filters.priceMin && price <= filters.priceMax;
+
+        // Normaliza condição do anúncio
+        const cond = offer.condition.toLowerCase();
+        const isNew = cond.includes('novo');
+        const isUsed =
+          cond.includes('usado') ||
+          cond.includes('seminovo') ||
+          cond.includes('recondicionado');
+
+        let conditionOk = true;
+        if (filters.condition === 'new') {
+          conditionOk = isNew;
+        } else if (filters.condition === 'used') {
+          conditionOk = isUsed;
+        }
+
+        return priceOk && conditionOk;
       });
 
       return {
         ...product,
-        offers: offersWithinRange,
+        offers: offersFiltered,
       };
     })
-    // Mantém só produtos que ainda têm pelo menos uma oferta dentro da faixa
+    // mantém só produtos que ainda têm pelo menos uma oferta após os filtros
     .filter((product) => product.offers.length > 0);
+
 
   // 2) Ordena de acordo com o "Ordenar por"
   const sortedProducts = [...productsWithinPriceRange];

@@ -22,11 +22,36 @@ const Dashboard = () => {
   };
 
   const categories = [
-    { id: 'electronics', name: 'Eletrônicos', icon: Smartphone, color: 'bg-blue-500' },
-    { id: 'fashion', name: 'Moda', icon: Shirt, color: 'bg-purple-500' },
-    { id: 'home', name: 'Casa', icon: Home, color: 'bg-green-500' },
-    { id: 'sports', name: 'Esportes', icon: Dumbbell, color: 'bg-orange-500' },
-  ];
+  {
+    id: 'electronics',
+    name: 'Eletrônicos',
+    searchTerm: 'celular',
+    icon: Smartphone,
+    color: 'bg-primary',
+  },
+  {
+    id: 'fashion',
+    name: 'Moda',
+    searchTerm: 'moda',
+    icon: Shirt,
+    color: 'bg-[#a855f7]',
+  },
+  {
+    id: 'home',
+    name: 'Casa',
+    searchTerm: 'decoracao',
+    icon: Home,
+    color: 'bg-[#22c55e]',
+  },
+  {
+    id: 'sports',
+    name: 'Esportes',
+    searchTerm: 'esporte',
+    icon: Dumbbell,
+    color: 'bg-[#f97316]',
+  },
+];
+
 
   const quickCategories = ['Smartphones', 'Notebooks', 'TVs', 'Roupas', 'Tênis', 'Livros'];
 
@@ -124,36 +149,49 @@ const Dashboard = () => {
         </div>
       </section>
 
-      {/* Favorite Categories */}
-      <section className='py-12 px-4 sm:px-6 lg:px-8 bg-background'>
-        <div className='container mx-auto'>
-          <h2 className='text-2xl sm:text-3xl font-bold text-foreground mb-6'>
-            Suas Categorias Favoritas
-          </h2>
+          {/* Favorite Categories */}
+    <section className='py-12 px-4 sm:px-6 lg:px-8 bg-background'>
+      <div className='container mx-auto'>
+        <h2 className='text-2xl sm:text-3xl font-bold text-foreground mb-6'>
+          Suas Categorias Favoritas
+        </h2>
 
-          <div className='grid grid-cols-2 lg:grid-cols-4 gap-4'>
-            {categories.map((category) => (
-              <Card
-                key={category.id}
-                className='glass hover-lift cursor-pointer group'
-                onClick={() => navigate(`/resultados?categoria=${category.id}`)}
-              >
-                <CardContent className='p-6 text-center'>
-                  <div
-                    className={`w-16 h-16 rounded-xl ${category.color} flex items-center justify-center mx-auto mb-4 shadow-lg group-hover:shadow-glow transition-all`}
-                  >
-                    <category.icon className='h-8 w-8 text-white' />
-                  </div>
-                  <h3 className='font-semibold text-foreground mb-2'>{category.name}</h3>
-                  <Button variant='ghost' size='sm' className='text-primary'>
-                    Ver ofertas →
-                  </Button>
-                </CardContent>
-              </Card>
-            ))}
-          </div>
+        <div className='grid grid-cols-2 lg:grid-cols-4 gap-4'>
+          {categories.map((category) => (
+            <Card
+              key={category.id}
+              className='glass hover-lift cursor-pointer group'
+              onClick={() =>
+                navigate(`/resultados?q=${encodeURIComponent(category.searchTerm)}`)
+              }
+            >
+              <CardContent className='p-6 text-center'>
+                <div
+                  className={`w-16 h-16 rounded-xl ${category.color} flex items-center justify-center mx-auto mb-4 shadow-lg group-hover:shadow-glow transition-all`}
+                >
+                  <category.icon className='h-8 w-8 text-white' />
+                </div>
+                <h3 className='font-semibold text-foreground mb-2'>
+                  {category.name}
+                </h3>
+                <Button
+                  variant='ghost'
+                  size='sm'
+                  className='text-primary'
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    navigate(`/resultados?q=${encodeURIComponent(category.searchTerm)}`);
+                  }}
+                >
+                  Ver ofertas →
+                </Button>
+              </CardContent>
+            </Card>
+          ))}
         </div>
-      </section>
+      </div>
+    </section>
+
 
       {/* Today's Deals */}
       <section className='py-12 px-4 sm:px-6 lg:px-8 bg-gradient-subtle'>
