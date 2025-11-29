@@ -63,11 +63,23 @@ async def scrape_mercadolivre(query: str) -> List[MercadoLivreProduct]:
                         
                         if fraction == '0' and not cents:
                              final_price = 'Preço não encontrado'
+                        # 4. Imagem
+                        # Tenta pegar a imagem do produto usando seletores mais genéricos
+                        img_element = (
+                            item.select_one("img.ui-search-result-image__element")  # seletor antigo
+                            or item.select_one("img.shops__image-element")          # outro seletor comum
+                            or item.select_one("img")                               # fallback genérico
+                        )
 
+                        image_url = None
+                        if img_element:
+                            # Mercado Livre costuma usar lazy-loading com data-src
+                            image_url = img_element.get("data-src") or img_element.get("src")
 
-                    # 4. Imagem
-                    img_element = item.select_one('img.ui-search-result-image__element')
-                    image_url = img_element.get('data-src') or img_element.get('src') if img_element else None
+                            # Se vier uma data URI (placeholder 1x1), ignoramos
+                            if image_url and image_url.startswith("data:"):
+                                image_url = None
+
                     
 
                     # Validação final (que estava impedindo a array de encher)
