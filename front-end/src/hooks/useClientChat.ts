@@ -31,7 +31,7 @@ export const useClientChat = (): UseClientChatReturn => {
     console.log('Received message:', wsMessage);
 
     switch (wsMessage.type) {
-      case 'CONNECT': {
+      case 'CONNECT':
         // Client receives sessionId on connection
         if (wsMessage.payload?.sessionId) {
           setSessionId(wsMessage.payload.sessionId as string);
@@ -59,9 +59,8 @@ export const useClientChat = (): UseClientChatReturn => {
           setMessages((prev) => [...prev, systemMessage]);
         }
         break;
-      }
 
-      case 'MESSAGE': {
+      case 'MESSAGE':
         // Message from supervisor
         if (wsMessage.from === 'SUPERVISOR' && wsMessage.payload?.text) {
           const newMessage: ChatMessage = {
@@ -74,9 +73,8 @@ export const useClientChat = (): UseClientChatReturn => {
           setMessages((prev) => [...prev, newMessage]);
         }
         break;
-      }
 
-      case 'DISCONNECT': {
+      case 'DISCONNECT':
         // Supervisor disconnected
         const disconnectMessage: ChatMessage = {
           id: Date.now(),
@@ -86,9 +84,8 @@ export const useClientChat = (): UseClientChatReturn => {
         };
         setMessages((prev) => [...prev, disconnectMessage]);
         break;
-      }
 
-      case 'ERROR': {
+      case 'ERROR':
         // Error from server
         const errorMessage: ChatMessage = {
           id: Date.now(),
@@ -98,7 +95,6 @@ export const useClientChat = (): UseClientChatReturn => {
         };
         setMessages((prev) => [...prev, errorMessage]);
         break;
-      }
     }
   }, []);
 
